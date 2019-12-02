@@ -1,4 +1,4 @@
-package model
+package mail
 
 import (
 	"bytes"
@@ -56,12 +56,12 @@ func (m *Mail) parseTemplate(fileName string, data interface{}) error {
 func (m *Mail) sendMail() bool {
 	body := "To:" + m.to + "\r\nSubject:" + m.subject + "\r\n" + MIME + "\r\n" + m.body
 
-	auth := smtp.PlainAuth("", "shonphand@gmail.com", "kjfsusizidokwusz", "smtp.gmail.com.")
+	auth := smtp.PlainAuth("", "lonkar.kaustubh29@gmail.com", "mybvsweysutwgkka", "smtp.gmail.com.")
 
 	// Connect to the server, authenticate, set the sender and recipient,
 	// and send the email all in one step.
 	to := []string{m.to}
-	err := smtp.SendMail("smtp.gmail.com.:25", auth, "shonphand@gmail.com", to, []byte(body))
+	err := smtp.SendMail("smtp.gmail.com.:25", auth, "lonkar.kaustubh29@gmail.com", to, []byte(body))
 	if err != nil {
 		return false
 	}
@@ -70,7 +70,7 @@ func (m *Mail) sendMail() bool {
 }
 
 func (m *Mail) Send(templateName string, items interface{}) {
-	err := m.parseTemplate("/home/shon/Documents/Go_practise/LoginApp/resources/template/"+templateName, items)
+	err := m.parseTemplate("/home/kaustubh/Documents/Go_practise/LoginApp/resources/template/"+templateName, items)
 	if err != nil {
 		fmt.Println("Error in parsing file", err.Error())
 	}
@@ -94,6 +94,6 @@ func GenerateOTP(max int) string {
 }
 
 func GenerateToken() string {
-	token := uuid.NewV4().String()
+	token := uuid.Must(uuid.NewV4()).String()
 	return token
 }

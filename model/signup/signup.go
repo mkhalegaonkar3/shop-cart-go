@@ -1,4 +1,4 @@
-package model
+package signup
 
 import (
 	"database/sql"
@@ -26,7 +26,7 @@ type List struct {
 
 func RegisterInDB(newuser Data, db *sql.DB) error {
 
-	stmt, err := db.Prepare("insert into users (firstname,lastname,email,password ,creation_time,updation_time) values(?,?,?,?,?,?);")
+	stmt, err := db.Prepare("insert into users (firstName,lastname,username,password ,creation_time,modified_time) values(?,?,?,?,?,?);")
 	if err != nil {
 		fmt.Print(err.Error())
 	}

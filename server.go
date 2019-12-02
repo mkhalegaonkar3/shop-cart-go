@@ -7,13 +7,13 @@ import (
 	"net/http"
 	"time"
 
-	
-	order "github.com/KaustubhLonkar/shop-cart-go/order"
-	products "github.com/KaustubhLonkar/shop-cart-go/products"
 	login "github.com/KaustubhLonkar/shop-cart-go/login"
+	"github.com/KaustubhLonkar/shop-cart-go/model/DB"
+
+	//order "github.com/KaustubhLonkar/shop-cart-go/order"
+	//products "github.com/KaustubhLonkar/shop-cart-go/products"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 // used to match which service is being called
@@ -22,18 +22,19 @@ const (
 	VERIFYUSERNAME = "/verifyUsername"
 	SIGNUP         = "/signup"
 	CHANGEPASS     = "/changepass"
-	RESETPWD      = "/resetpwd"
+	RESETPWD       = "/resetpwd"
 	CREATELIST     = "/createList"
 	ADDITEMS       = "/addItems"
 	SHARELIST      = "/shareList"
 	DELETEITEM     = "/deleteItem"
 	DELETELIST     = "/deleteList"
-	ADDPRODUCT     = "/addProduct"
-	GETPRODUCTS    = "/getProducts"
-	PLACEORDER     = "/placeOrder"
+	// ADDPRODUCT = "/addProduct"
+	// GETPRODUCTS = "/getProducts"
+	// PLACEORDER = "/placeOrder"
 )
 
 func main() {
+
 	rand.Seed(time.Now().UTC().UnixNano())
 	router := initRouter()
 	router.Run(":8888")
@@ -42,18 +43,22 @@ func main() {
 func initRouter() *gin.Engine {
 
 	r := gin.New()
-	p.Use(r)
+	//p.Use(r)
 	r.Use(gin.Recovery(), plainLoggerWithWriter(gin.DefaultWriter))
 	r.GET("/status", statusCheck)
 	r.POST("/signup", requestRouter)
 	r.POST("/login", requestRouter)
 	r.POST("/verifyUsername", requestRouter)
 	r.POST("/changepass", requestRouter)
-	r.GET("/resetpwd", handler.ResetPasswordPage())
+	//r.GET("/resetpwd", login.ResetPasswordPage())
 	r.GET("/sessions", requestRouter)
-	r.POST("/addProduct", requestRouter)
-	r.GET("/getProducts", requestRouter)
-	r.POST("/placeOrder", requestRouter)
+	r.POST("/createList", requestRouter)
+	r.POST("/addItems", requestRouter)
+	r.POST("/shareList", requestRouter)
+	r.POST("/deleteItem", requestRouter)
+	r.POST("/deleteList", requestRouter)
+	// r.GET("/getProducts", requestRouter)
+	// r.POST("/placeOrder", requestRouter)
 	return r
 }
 
@@ -101,40 +106,42 @@ func exception(c *gin.Context) {
 }
 
 func requestRouter(c *gin.Context) {
+	db, err := DB.Start()
 
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
+
+	defer db.Close()
 	path := c.Request.URL.Path
 	fmt.Println("The obtained path is:- ", path)
 	switch path {
-	case ADDPRODUCT:
-		products.AddProduct(c)
-	case GETPRODUCTS:
-		products.GetProducts(c)
-	case PLACEORDER:
-		order.PlaceOrder(c)
+	// case ADDPRODUCT:
+	// products.AddProduct(c)
+	// case GETPRODUCTS:
+	// products.GetProducts(c)
+	// case PLACEORDER:
+	// order.PlaceOrder(c)
 	case LOGIN:
-		login.LoginPost(c)
+		login.LoginPost(db)
 	case VERIFYUSERNAME:
-		login.VerifyUsername(c)
+		login.VerifyUsername(db)
 	case SIGNUP:
-		login.RegistrationPost(c)
+		login.RegistrationPost(db)
 	case CHANGEPASS:
-		login.PasswordReset(c)
-	case RESETPWD:
-		login.ResetPasswordPage(c)
-	case LOGIN:
-		login.LoginPost(c)
-	case CREATELIST:
-		
-	case ADDITEMS:
-		
-	case SHARELIST:
-		
-	case DELETEITEM:
-		
-	case DELETELIST:
-		
-	
-	
+		login.PasswordReset(db)
+		// case RESETPWD:
+		// 	login.ResetPasswordPage(db)
+		// case CREATELIST:
+
+		// case ADDITEMS:
+
+		// case SHARELIST:
+
+		// case DELETEITEM:
+
+		// case DELETELIST:
+
 	}
 
 }
