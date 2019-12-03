@@ -123,13 +123,13 @@ func requestRouter(c *gin.Context) {
 	// case PLACEORDER:
 	// order.PlaceOrder(c)
 	case LOGIN:
-		login.LoginPost(db,c)
+		login.LoginPost(db, c)
 	case VERIFYUSERNAME:
-		login.VerifyUsername(db,c)
+		login.VerifyUsername(db, c)
 	case SIGNUP:
-		login.RegistrationPost(db,c)
+		login.RegistrationPost(db, c)
 	case CHANGEPASS:
-		login.PasswordReset(db,c)
+		login.PasswordReset(db, c)
 		// case RESETPWD:
 		// 	login.ResetPasswordPage(db)
 		// case CREATELIST:

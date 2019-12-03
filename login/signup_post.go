@@ -15,11 +15,12 @@ import (
 )
 
 func RegistrationPost(db *sql.DB, c *gin.Context) {
-	
+
 	firstname := c.PostForm("firstname")
 	lastname := c.PostForm("lastname")
 	email := c.PostForm("email")
 	password := c.PostForm("password")
+	//fmt.Println("The first name is:-",firstname)
 	// firstname := c.Param("first_name")
 	// lastname := c.Param("last_name")
 	// email := c.Param("email")
@@ -27,7 +28,7 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 	//fmt.Println("Received all the parameters for sign up", firstname)
 	/* password hashing mechanism */
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
-	
+
 	var newuser signup.Data
 
 	newuser.Firstname = firstname
@@ -50,18 +51,35 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 		m := mail.NewMail(newuser.Email, "Registration successful")
 		m.Send("signupmail.gohtml", comm)
 
-		c.HTML(http.StatusPermanentRedirect, "login.gohtml", msg)
+		c.JSON(http.StatusOK, gin.H{
+			"status":  http.StatusOK,
+			"message": msg,
+		})
+		return
+		//c.HTML(http.StatusPermanentRedirect, "login.gohtml", msg)
 	} else {
 		var msg string
 		if strings.Contains(err.Error(), "Error 1062") {
 			msg = "email already exist,please try with another email !!!"
-			c.HTML(500, "registration.gohtml", msg)
+			c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": msg})
+			return
 		} else {
-			msg = "sorry something went wrong"
-			c.HTML(500, "registration.gohtml", msg)
+			msg = "Internal server error"
+			c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": msg})
+			return
+			//	c.HTML(500, "registration.gohtml", msg)
 		}
 	}
-	//newuser := signup.User{firstname, lastname, email, string(hashedPassword)}
-	//user.Register(newuser)
 
 }
+
+// c.JSON(http.StatusOK, gin.H{
+// 	"status":  http.StatusOK,
+// 	"message": "placed order is successfull...!",
+// 	"data":    ord,
+// })
+// return
+// } else {
+// c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "No Product found !!"})
+// return
+// }
