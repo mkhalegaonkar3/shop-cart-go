@@ -9,6 +9,7 @@ import (
 
 	login "github.com/KaustubhLonkar/shop-cart-go/login"
 	"github.com/KaustubhLonkar/shop-cart-go/model/DB"
+	"github.com/KaustubhLonkar/shop-cart-go/products"
 
 	//order "github.com/KaustubhLonkar/shop-cart-go/order"
 	//products "github.com/KaustubhLonkar/shop-cart-go/products"
@@ -28,7 +29,7 @@ const (
 	SHARELIST      = "/shareList"
 	DELETEITEM     = "/deleteItem"
 	DELETELIST     = "/deleteList"
-	// ADDPRODUCT = "/addProduct"
+	ADDPRODUCT     = "/addProduct"
 	// GETPRODUCTS = "/getProducts"
 	// PLACEORDER = "/placeOrder"
 )
@@ -116,8 +117,8 @@ func requestRouter(c *gin.Context) {
 	path := c.Request.URL.Path
 	fmt.Println("The obtained path is:- ", path)
 	switch path {
-	// case ADDPRODUCT:
-	// products.AddProduct(c)
+	case ADDPRODUCT:
+		products.AddProduct(db, c)
 	// case GETPRODUCTS:
 	// products.GetProducts(c)
 	// case PLACEORDER:

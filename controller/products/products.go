@@ -1,20 +1,20 @@
 package products
 
-// import (
-// 	"net/http"
-// 	"strconv"
+import (
+	"database/sql"
+	"fmt"
+	"net/http"
+	"strconv"
 
-// 	model "github.com/KaustubhLonkar/shop-cart-go/model"
-// 	"github.com/gin-gonic/gin"
-// 	"github.com/jinzhu/gorm"
-// )
+	"github.com/KaustubhLonkar/order-management-go/model"
+	"github.com/gin-gonic/gin"
+)
 
-// type product struct {
-// 	gorm.Model
-// 	ProductName     string `json:"product_name"`
-// 	ProductQuantity int    `json:"product_quantity"`
-// 	ProductPrice    int    `json:"product_price"`
-// }
+type product struct {
+	productName     string `json:"productName"`
+	productQuantity int    `json:"productQuantity"`
+	categoryID      int    `json:"categoryID"`
+}
 
 // //TransformedProduct struct
 // type TransformedProduct struct {
@@ -24,31 +24,41 @@ package products
 // 	ProductPrice    int    `json:"product_price"`
 // }
 
-// func addProductDB(prod *product) {
-// 	model.Db.AutoMigrate(&prod)
-// }
+func addProductDB(prod *product) {
+	model.Db.AutoMigrate(&prod)
+}
 
-// // AddProduct func
-// func AddProduct(c *gin.Context) {
+// AddProduct func
+func AddProduct(db *sql.DB, c *gin.Context) {
 
-// 	price, _ := strconv.Atoi(c.PostForm("pprice"))
-// 	quantity, _ := strconv.Atoi(c.PostForm("pquantity"))
-// 	prod := product{
+	productName := c.PostForm("productName")
+	productQuantity, _ := strconv.Atoi(c.PostForm("productQuantity"))
+	categoryID, _ := strconv.Atoi(c.PostForm("categoryID"))
 
-// 		ProductName:     c.PostForm("pname"),
-// 		ProductPrice:    price,
-// 		ProductQuantity: quantity,
-// 	}
-// 	addProductDB(&prod)
-// 	model.Db.Save(&prod)
-// 	c.JSON(http.StatusCreated, gin.H{
-// 		"status":  http.StatusCreated,
-// 		"message": "Product added successfully",
-// 	})
+	var product product
+	product.productName = productName
+	product.productQuantity = productQuantity
+	product.categoryID = categoryID
 
-// }
+	stmt, err := db.Prepare("insert into products (productName,quantity,categoryID) values(?,?,?);")
+	if err != nil {
+		fmt.Print(err.Error())
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(product.productName, product.productQuantity, product.categoryID)
 
-// // GetProducts func
+	if err != nil {
+		fmt.Print(err.Error())
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"status":  http.StatusCreated,
+		"message": "Product added successfully",
+	})
+
+}
+
+// GetProducts func
 // func GetProducts(c *gin.Context) {
 // 	var products []product
 // 	var _products []TransformedProduct

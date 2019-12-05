@@ -20,7 +20,6 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 	lastname := c.PostForm("lastname")
 	email := c.PostForm("email")
 	password := c.PostForm("password")
-	//fmt.Println("The first name is:-",firstname)
 	// firstname := c.Param("first_name")
 	// lastname := c.Param("last_name")
 	// email := c.Param("email")
@@ -40,7 +39,7 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 
 	comm := mail.Comms{}
 	comm.Token = mail.GenerateToken()
-	//comm.OTP = mail.GenerateOTP(6)
+
 	comm.Name = newuser.Firstname
 	comm.Username = newuser.Email
 	comm.Password = password
@@ -56,7 +55,7 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 			"message": msg,
 		})
 		return
-		//c.HTML(http.StatusPermanentRedirect, "login.gohtml", msg)
+
 	} else {
 		var msg string
 		if strings.Contains(err.Error(), "Error 1062") {
@@ -67,19 +66,8 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 			msg = "Internal server error"
 			c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": msg})
 			return
-			//	c.HTML(500, "registration.gohtml", msg)
+
 		}
 	}
 
 }
-
-// c.JSON(http.StatusOK, gin.H{
-// 	"status":  http.StatusOK,
-// 	"message": "placed order is successfull...!",
-// 	"data":    ord,
-// })
-// return
-// } else {
-// c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "No Product found !!"})
-// return
-// }
