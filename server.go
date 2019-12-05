@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	login "github.com/KaustubhLonkar/shop-cart-go/login"
+	login "github.com/KaustubhLonkar/shop-cart-go/controller/login"
 	"github.com/KaustubhLonkar/shop-cart-go/model/DB"
 	"github.com/KaustubhLonkar/shop-cart-go/products"
 
@@ -133,8 +133,8 @@ func requestRouter(c *gin.Context) {
 		login.PasswordReset(db, c)
 		// case RESETPWD:
 		// 	login.ResetPasswordPage(db)
-		// case CREATELIST:
-
+	case CREATELIST:
+		login.PasswordReset(db, c)
 		// case ADDITEMS:
 
 		// case SHARELIST:
