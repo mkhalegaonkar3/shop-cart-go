@@ -14,6 +14,18 @@ type List struct {
 	Status    string `json:"status"`
 }
 
+//productID INT,productName varchar(255), listTitle varchar(255),creation_time TIMESTAMP, modified_time TIMESTAMP,deletion_time TIMESTAMP,modifiedBy varchar(255), FOREIGN KEY (productID) REFERENCES products (productID) ON DELETE CASCADE);
+type ListDetails struct {
+	//UserID    int    `json:"userID"`
+	ProductID   int    `json:"productID"`
+	ProductName string `json:"productName"`
+	ListTitle   string `json:"listTitle"`
+	Create      string `json:"create"`
+	Update      string `json:"update"`
+	Delete      string `json:"delete"`
+	ModifiedBy  string `json:"modifiedBy"`
+}
+
 func CreateList(list List, db *sql.DB) error {
 	fmt.Println("New User:-", list.UserID)
 	fmt.Println("New User:-", list.ListTitle)

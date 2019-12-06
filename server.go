@@ -7,9 +7,10 @@ import (
 	"net/http"
 	"time"
 
+	list "github.com/KaustubhLonkar/shop-cart-go/controller/list"
 	login "github.com/KaustubhLonkar/shop-cart-go/controller/login"
+	"github.com/KaustubhLonkar/shop-cart-go/controller/products"
 	"github.com/KaustubhLonkar/shop-cart-go/model/DB"
-	"github.com/KaustubhLonkar/shop-cart-go/products"
 
 	//order "github.com/KaustubhLonkar/shop-cart-go/order"
 	//products "github.com/KaustubhLonkar/shop-cart-go/products"
@@ -134,14 +135,15 @@ func requestRouter(c *gin.Context) {
 		// case RESETPWD:
 		// 	login.ResetPasswordPage(db)
 	case CREATELIST:
-		login.PasswordReset(db, c)
-		// case ADDITEMS:
+		list.CreateList(db, c)
+	case ADDITEMS:
+		list.AddItemsList(db, c)
+	// case SHARELIST:
 
-		// case SHARELIST:
-
-		// case DELETEITEM:
-
-		// case DELETELIST:
+	case DELETEITEM:
+		list.DeleteItemList(db, c)
+	case DELETELIST:
+		list.DeleteList(db, c)
 
 	}
 
