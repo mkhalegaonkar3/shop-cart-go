@@ -17,6 +17,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+//LoginPage func
 func LoginPage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid, err := c.Cookie("session")
@@ -28,6 +29,7 @@ func LoginPage() gin.HandlerFunc {
 	}
 }
 
+// LoginPost func
 func LoginPost(db *sql.DB, c *gin.Context) {
 
 	sid, err := c.Cookie("session")
@@ -66,6 +68,7 @@ func LoginPost(db *sql.DB, c *gin.Context) {
 
 }
 
+// Logout func
 func Logout(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid, _ := c.Cookie("session")
@@ -78,6 +81,7 @@ func Logout(db *sql.DB) gin.HandlerFunc {
 	}
 }
 
+// PasswordReset func
 func PasswordReset(db *sql.DB, c *gin.Context) {
 
 	c1, err := c.Cookie("selfserve")
@@ -110,6 +114,7 @@ func PasswordReset(db *sql.DB, c *gin.Context) {
 
 }
 
+// ResetPasswordPage func
 func ResetPasswordPage() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
@@ -119,6 +124,7 @@ func ResetPasswordPage() gin.HandlerFunc {
 
 }
 
+// ActiveSession func
 func ActiveSession(db *sql.DB) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
@@ -132,17 +138,14 @@ func ActiveSession(db *sql.DB) gin.HandlerFunc {
 
 }
 
+// RegistrationPost func
 func RegistrationPost(db *sql.DB, c *gin.Context) {
 
 	firstname := c.PostForm("firstname")
 	lastname := c.PostForm("lastname")
 	email := c.PostForm("email")
 	password := c.PostForm("password")
-	// firstname := c.Param("first_name")
-	// lastname := c.Param("last_name")
-	// email := c.Param("email")
-	// password := c.Param("password")
-	//fmt.Println("Received all the parameters for sign up", firstname)
+	
 	/* password hashing mechanism */
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
 
