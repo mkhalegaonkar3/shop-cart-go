@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreatList func
+// CreateList func
 func CreateList(db *sql.DB, c *gin.Context) {
 
 	userID, _ := strconv.Atoi(c.PostForm("userid"))
@@ -40,38 +40,36 @@ func CreateList(db *sql.DB, c *gin.Context) {
 
 	} else {
 		var msg string
-		if strings.Contains(err.Error(), "Error 1062") {
-			msg = "The list name already exist,please try with another name !!!"
-			c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": msg})
-			return
-		} else {
-			msg = "Internal server error"
-			c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": msg})
-			return
 
-		}
+		msg = "Internal server error"
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": msg})
+		return
+
 	}
 }
-//productID INT,productName varchar(255), listTitle varchar(255),creation_time TIMESTAMP, modified_time TIMESTAMP,deletion_time TIMESTAMP,modifiedBy varchar(255), FOREIGN KEY (productID) REFERENCES products (productID) ON DELETE CASCADE);
-// CreatList func
+
+// AddItemsList func
 func AddItemsList(db *sql.DB, c *gin.Context) {
 
-	//userID, _ := strconv.Atoi(c.PostForm("userid"))
+	var listDetails listDb.ListDetails
+
 	productID, _ := strconv.Atoi(c.PostForm("productid"))
+	productName := c.PostForm("ProductName")
 	listTitle := c.PostForm("listTitle")
+	username := c.PostForm("listTitle")
 
-	var list listDb.List
+	listDetails.ProductID = productID
+	listDetails.ProductName = productName
+	listDetails.ListTitle = listTitle
+	listDetails.Create = time.Now().Format("Mon Jan _2 15:04:05 2006")
+	listDetails.Update = time.Now().Format("Mon Jan _2 15:04:05 2006")
+	listDetails.Delete = time.Now().Format("Mon Jan _2 15:04:05 2006")
+	listDetails.ModifiedBy = username
 
-	list.UserID = userID
-	list.ListTitle = listTitle
-	list.Create = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	list.Update = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	list.Delete = time.Now().Format("Mon Jan _2 15:04:05 2006")
-
-	fmt.Println("Received all the parameters for sign up", list)
-	err := listDb.CreateList(list, db)
+	fmt.Println("Received all the parameters for list of items in cart", listDetails)
+	err := listDb.AddItemsList(listDetails, db)
 	if err == nil {
-		msg := "Registration successful, please login !!!"
+		msg := "List creation was successful, please login !!!"
 
 		c.JSON(http.StatusOK, gin.H{
 			"status":  http.StatusOK,
@@ -82,7 +80,7 @@ func AddItemsList(db *sql.DB, c *gin.Context) {
 	} else {
 		var msg string
 		if strings.Contains(err.Error(), "Error 1062") {
-			msg = "email already exist,please try with another email !!!"
+			msg = "List Details already exist,please try with another email !!!"
 			c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": msg})
 			return
 		} else {
@@ -94,24 +92,17 @@ func AddItemsList(db *sql.DB, c *gin.Context) {
 	}
 }
 
-// CreatList func
+// DeleteItemList func
 func DeleteItemList(db *sql.DB, c *gin.Context) {
 
-	userID, _ := strconv.Atoi(c.PostForm("userid"))
+	productID, _ := strconv.Atoi(c.PostForm("productID"))
+	productName := c.PostForm("productName")
 	listTitle := c.PostForm("listTitle")
 
-	var list listDb.List
-
-	list.UserID = userID
-	list.ListTitle = listTitle
-	list.Create = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	list.Update = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	list.Delete = time.Now().Format("Mon Jan _2 15:04:05 2006")
-
-	fmt.Println("Received all the parameters for sign up", list)
-	err := listDb.CreateList(list, db)
+	fmt.Println("Received all the parameters for deleting item from list", productID, " ", productName, " ", listTitle)
+	err := listDb.DeleteItemList(productID, productName, listTitle, db)
 	if err == nil {
-		msg := "Registration successful, please login !!!"
+		msg := "Deletion of item from list successful !!!"
 
 		c.JSON(http.StatusOK, gin.H{
 			"status":  http.StatusOK,
@@ -134,24 +125,16 @@ func DeleteItemList(db *sql.DB, c *gin.Context) {
 	}
 }
 
-// CreatList func
+// DeleteList func
 func DeleteList(db *sql.DB, c *gin.Context) {
 
-	userID, _ := strconv.Atoi(c.PostForm("userid"))
-	listTitle := c.PostForm("listTitle")
+	listid, _ := strconv.Atoi(c.PostForm("listid"))
+	listname := c.PostForm("listTitle")
 
-	var list listDb.List
-
-	list.UserID = userID
-	list.ListTitle = listTitle
-	list.Create = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	list.Update = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	list.Delete = time.Now().Format("Mon Jan _2 15:04:05 2006")
-
-	fmt.Println("Received all the parameters for sign up", list)
-	err := listDb.CreateList(list, db)
+	fmt.Println("Received all the parameters for deleting list", listid, listname)
+	err := listDb.DeleteList(listid, listname, db)
 	if err == nil {
-		msg := "Registration successful, please login !!!"
+		msg := "Deletion of list successful!!!"
 
 		c.JSON(http.StatusOK, gin.H{
 			"status":  http.StatusOK,

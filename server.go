@@ -9,7 +9,7 @@ import (
 
 	list "github.com/KaustubhLonkar/shop-cart-go/controller/list"
 	login "github.com/KaustubhLonkar/shop-cart-go/controller/login"
-	"github.com/KaustubhLonkar/shop-cart-go/controller/products"
+	products "github.com/KaustubhLonkar/shop-cart-go/controller/products"
 	"github.com/KaustubhLonkar/shop-cart-go/model/DB"
 
 	//order "github.com/KaustubhLonkar/shop-cart-go/order"
@@ -31,6 +31,7 @@ const (
 	DELETEITEM     = "/deleteItem"
 	DELETELIST     = "/deleteList"
 	ADDPRODUCT     = "/addProduct"
+	ADDCATEGORY    = "/addCategory"
 	// GETPRODUCTS = "/getProducts"
 	// PLACEORDER = "/placeOrder"
 )
@@ -142,8 +143,12 @@ func requestRouter(c *gin.Context) {
 
 	case DELETEITEM:
 		list.DeleteItemList(db, c)
+	case ADDCATEGORY:
+		list.DeleteItemList(db, c)
 	case DELETELIST:
 		list.DeleteList(db, c)
+	case ADDPRODUCT:
+		products.AddProduct(db, c)
 
 	}
 

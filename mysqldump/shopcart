@@ -12,4 +12,4 @@ create table sessions (sid varchar(255) PRIMARY KEY, userID INT,creation_time TI
 
 create table list (listID INT PRIMARY KEY, userID INT, listTitle varchar(255), creation_time TIMESTAMP, modified_time TIMESTAMP,deletion_time TIMESTAMP,status varchar(255), FOREIGN KEY (userID) REFERENCES users (userID) ON DELETE CASCADE );
 
-create table listDetails (listID INT PRIMARY KEY, productID INT,productName varchar(255), listTitle varchar(255),creation_time TIMESTAMP, modified_time TIMESTAMP,deletion_time TIMESTAMP,modifiedBy varchar(255), FOREIGN KEY (productID) REFERENCES products (productID) ON DELETE CASCADE);
+create table listDetails (listDetailID INT PRIMARY KEY, productID INT,productName varchar(255), listTitle varchar(255),creation_time TIMESTAMP, modified_time TIMESTAMP,deletion_time TIMESTAMP,modifiedBy varchar(255), FOREIGN KEY (productID) REFERENCES products (productID) ON DELETE CASCADE);
