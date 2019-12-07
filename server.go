@@ -60,6 +60,8 @@ func initRouter() *gin.Engine {
 	r.POST("/shareList", requestRouter)
 	r.POST("/deleteItem", requestRouter)
 	r.POST("/deleteList", requestRouter)
+	r.POST("/addProduct", requestRouter)
+	r.POST("/addCategory", requestRouter)
 	// r.GET("/getProducts", requestRouter)
 	// r.POST("/placeOrder", requestRouter)
 	return r
@@ -119,8 +121,7 @@ func requestRouter(c *gin.Context) {
 	path := c.Request.URL.Path
 	fmt.Println("The obtained path is:- ", path)
 	switch path {
-	case ADDPRODUCT:
-		products.AddProduct(db, c)
+	
 	// case GETPRODUCTS:
 	// products.GetProducts(c)
 	// case PLACEORDER:

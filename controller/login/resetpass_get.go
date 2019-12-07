@@ -1,16 +1,16 @@
 package login
 
-import (
-	"net/http"
+// import (
+// 	"net/http"
 
-	"github.com/gin-gonic/gin"
-)
+// 	"github.com/gin-gonic/gin"
+// )
 
-func ResetPasswordPage() gin.HandlerFunc {
+// func ResetPasswordPage() gin.HandlerFunc {
 
-	return func(c *gin.Context) {
+// 	return func(c *gin.Context) {
 
-		c.HTML(http.StatusOK, "resetpass.gohtml", nil)
-	}
+// 		c.HTML(http.StatusOK, "resetpass.gohtml", nil)
+// 	}
 
-}
+// }
