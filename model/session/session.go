@@ -20,7 +20,7 @@ type Repo struct {
 }
 
 func Add(sid string, details signup.Data, db *sql.DB) {
-	//stmt, err := db.Prepare("insert into users (firstname,lastname,email,password ,creation_time,updation_time) values(?,?,?,?,?,?);")
+
 	stmt, err := db.Prepare("insert into sessions  (sid,username,create_time,update_time) values(?,?,?,?)")
 	if err != nil {
 		fmt.Println(err.Error())

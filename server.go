@@ -32,8 +32,6 @@ const (
 	DELETELIST     = "/deleteList"
 	ADDPRODUCT     = "/addProduct"
 	ADDCATEGORY    = "/addCategory"
-	// GETPRODUCTS = "/getProducts"
-	// PLACEORDER = "/placeOrder"
 )
 
 func main() {
@@ -121,11 +119,7 @@ func requestRouter(c *gin.Context) {
 	path := c.Request.URL.Path
 	fmt.Println("The obtained path is:- ", path)
 	switch path {
-	
-	// case GETPRODUCTS:
-	// products.GetProducts(c)
-	// case PLACEORDER:
-	// order.PlaceOrder(c)
+
 	case LOGIN:
 		login.LoginPost(db, c)
 	case VERIFYUSERNAME:

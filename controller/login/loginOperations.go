@@ -33,12 +33,13 @@ func LoginPage() gin.HandlerFunc {
 func LoginPost(db *sql.DB, c *gin.Context) {
 
 	sid, err := c.Cookie("session")
-	//	fmt.Println("err,sid:", err, sid)
+	fmt.Println("Print err:", err)
+	fmt.Println("Print sid:", sid)
 	if err != nil || sid == "" {
 		//fmt.Println("err,sid::", err, sid)
 		username := c.PostForm("username")
 		password := c.PostForm("password")
-
+		fmt.Println("The username is:", username)
 		user, err := login.GetUserByUsername(username, db)
 
 		if err == nil {
@@ -46,22 +47,23 @@ func LoginPost(db *sql.DB, c *gin.Context) {
 			if err == nil {
 
 				cookie := uuid.Must(uuid.NewV4()).String()
+				fmt.Println("The cookie obtained is:", cookie)
 				c.SetCookie("session", cookie, 300, "/", "", false, true)
 				details, _ := login.GetUserByUsername(username, db)
 
 				session.Add(cookie, details, db)
 				//TODO
-				c.Redirect(303, "/homepage?sid="+cookie)
+				//c.Redirect(303, "/homepage?sid="+cookie)
 
 			} else {
+				fmt.Println("The err while login is:-", err)
 				c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "password not matched"})
-				//c.String(400, "password not matched")
+
 			}
 
 		} else {
 			c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "username not found"})
 
-			//c.JSON(404, "username not found")
 		}
 
 	}
@@ -145,30 +147,30 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 	lastname := c.PostForm("lastname")
 	email := c.PostForm("email")
 	password := c.PostForm("password")
-	
+
 	/* password hashing mechanism */
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
 
-	var newuser signup.Data
+	var newUser signup.Data
 
-	newuser.Firstname = firstname
-	newuser.Lastname = lastname
-	newuser.Email = email
-	newuser.Password = string(hashedPassword)
-	newuser.Create = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	newuser.Update = time.Now().Format("Mon Jan _2 15:04:05 2006")
+	newUser.Firstname = firstname
+	newUser.Lastname = lastname
+	newUser.Email = email
+	newUser.Password = string(hashedPassword)
+	newUser.Create = time.Now().Format("2006-01-02 15:04:05")
+	newUser.Update = time.Now().Format("2006-01-02 15:04:05")
 
 	comm := mail.Comms{}
 	comm.Token = mail.GenerateToken()
 
-	comm.Name = newuser.Firstname
-	comm.Username = newuser.Email
+	comm.Name = newUser.Firstname
+	comm.Username = newUser.Email
 	comm.Password = password
-	fmt.Println("Received all the parameters for sign up", newuser)
-	err := signup.RegisterInDB(newuser, db)
+	fmt.Println("Received all the parameters for sign up", newUser)
+	err := signup.RegisterInDB(newUser, db)
 	if err == nil {
 		msg := "Registration successful, please login !!!"
-		m := mail.NewMail(newuser.Email, "Registration successful")
+		m := mail.NewMail(newUser.Email, "Registration successful")
 		m.Send("signupmail.gohtml", comm)
 
 		c.JSON(http.StatusOK, gin.H{

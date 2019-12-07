@@ -8,11 +8,11 @@ import (
 )
 
 //GetUserByUsername
-func GetUserByUsername(email string, db *sql.DB) (signup.Data, error) {
+func GetUserByUsername(username string, db *sql.DB) (signup.Data, error) {
 	var data signup.Data
-	row := db.QueryRow("select * from users where email= ?;", email)
+	row := db.QueryRow("select firstName,lastname,username,creation_time from users where username= ?;", username)
 
-	err := row.Scan(&data.ID, &data.Firstname, &data.Lastname, &data.Email, &data.Password, &data.Create, &data.Update)
+	err := row.Scan(&data.Firstname, &data.Lastname, &data.Email, &data.Create)
 	if err != nil {
 		fmt.Print("No details found", err.Error())
 	}

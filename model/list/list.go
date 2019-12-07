@@ -63,12 +63,12 @@ func AddItemsList(listDetails ListDetails, db *sql.DB) error {
 // DeleteItemList func
 func DeleteItemList(productID int, productName string, listTitle string, db *sql.DB) error {
 
-	stmt, err := db.Prepare("Delete from listDetails where productID=?;")
+	stmt, err := db.Prepare("Delete from listDetails where productID=? AND productName=? AND listTitle=?;")
 	if err != nil {
 		fmt.Print(err.Error())
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec()
+	_, err = stmt.Exec(productID, productName, listTitle)
 
 	if err != nil {
 		fmt.Print(err.Error())
@@ -80,12 +80,12 @@ func DeleteItemList(productID int, productName string, listTitle string, db *sql
 // DeleteList func
 func DeleteList(listID int, listTitle string, db *sql.DB) error {
 
-	stmt, err := db.Prepare("delete from list where ListID=? ;")
+	stmt, err := db.Prepare("delete from list where ListID=? AND listTitle=? ;")
 	if err != nil {
 		fmt.Print(err.Error())
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec()
+	_, err = stmt.Exec(listID, listTitle)
 
 	if err != nil {
 		fmt.Print(err.Error())

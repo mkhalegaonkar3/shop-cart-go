@@ -11,7 +11,7 @@ type Getter interface {
 
 //for database storage
 type Data struct {
-	ID        int    `json:"id"`
+	ID        int    `json:"-"`
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
 	Email     string `json:"email"`
@@ -25,10 +25,7 @@ type List struct {
 }
 
 func RegisterInDB(newuser Data, db *sql.DB) error {
-	fmt.Println("New User:-", newuser.Firstname)
-	fmt.Println("New User:-", newuser.Lastname)
-	fmt.Println("New User:-", newuser.Email)
-	fmt.Println("New User:-", newuser.Password)
+
 	fmt.Println("New User:-", newuser.Create)
 	fmt.Println("New User:-", newuser.Update)
 	stmt, err := db.Prepare("insert into users (firstName,lastname,username,password,creation_time,modified_time) values(?,?,?,?,?,?);")
