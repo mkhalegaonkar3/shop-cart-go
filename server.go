@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	category "github.com/KaustubhLonkar/shop-cart-go/controller/category"
 	list "github.com/KaustubhLonkar/shop-cart-go/controller/list"
 	login "github.com/KaustubhLonkar/shop-cart-go/controller/login"
 	products "github.com/KaustubhLonkar/shop-cart-go/controller/products"
@@ -139,7 +140,7 @@ func requestRouter(c *gin.Context) {
 	case DELETEITEM:
 		list.DeleteItemList(db, c)
 	case ADDCATEGORY:
-		list.DeleteItemList(db, c)
+		category.AddCategory(db, c)
 	case DELETELIST:
 		list.DeleteList(db, c)
 	case ADDPRODUCT:
