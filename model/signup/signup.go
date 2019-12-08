@@ -5,12 +5,12 @@ import (
 	"fmt"
 )
 
-type Getter interface {
-	GetAllRegisterdInDB(db *sql.DB) []Data
-}
+// type Getter interface {
+// 	GetAllRegisterdInDB(db *sql.DB) []UserData
+// }
 
 //for database storage
-type Data struct {
+type UserData struct {
 	ID        int    `json:"-"`
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
@@ -21,13 +21,11 @@ type Data struct {
 }
 
 type List struct {
-	Users []Data
+	Users []UserData
 }
 
-func RegisterInDB(newuser Data, db *sql.DB) error {
+func RegisterInDB(newuser UserData, db *sql.DB) error {
 
-	fmt.Println("New User:-", newuser.Create)
-	fmt.Println("New User:-", newuser.Update)
 	stmt, err := db.Prepare("insert into users (firstName,lastname,username,password,creation_time,modified_time) values(?,?,?,?,?,?);")
 	if err != nil {
 		fmt.Print(err.Error())
@@ -42,22 +40,22 @@ func RegisterInDB(newuser Data, db *sql.DB) error {
 	return err
 }
 
-func GetAllRegisterdInDB(db *sql.DB) []Data {
+// func GetAllRegisterdInDB(db *sql.DB) []UserData {
 
-	var data Data
-	var allusers List
-	rows, err := db.Query("select * from users;")
-	defer rows.Close()
-	if err != nil {
-		fmt.Print(err.Error())
-	}
-	for rows.Next() {
-		err = rows.Scan(&data.ID, &data.Firstname, &data.Lastname, &data.Email, &data.Password, &data.Create, &data.Update)
-		allusers.Users = append(allusers.Users, data)
-		if err != nil {
-			fmt.Print(err.Error())
-		}
-	}
-	//fmt.Println("data received : ", allusers.Users)
-	return allusers.Users
-}
+// 	var data UserData
+// 	var allusers List
+// 	rows, err := db.Query("select * from users;")
+// 	defer rows.Close()
+// 	if err != nil {
+// 		fmt.Print(err.Error())
+// 	}
+// 	for rows.Next() {
+// 		err = rows.Scan(&data.ID, &data.Firstname, &data.Lastname, &data.Email, &data.Password, &data.Create, &data.Update)
+// 		allusers.Users = append(allusers.Users, data)
+// 		if err != nil {
+// 			fmt.Print(err.Error())
+// 		}
+// 	}
+// 	//fmt.Println("data received : ", allusers.Users)
+// 	return allusers.Users
+// }

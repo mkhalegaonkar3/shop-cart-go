@@ -14,6 +14,7 @@ import (
 
 var table = [...]byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
 
+// Comms struct
 type Comms struct {
 	Token    string
 	OTP      string
@@ -22,6 +23,7 @@ type Comms struct {
 	Password string
 }
 
+//Mail struct
 type Mail struct {
 	from    string
 	to      string
@@ -29,6 +31,7 @@ type Mail struct {
 	body    string
 }
 
+// NewMail func
 func NewMail(to string, subject string) *Mail {
 	return &Mail{
 		to:      to,
@@ -69,8 +72,9 @@ func (m *Mail) sendMail() bool {
 	return true
 }
 
+// Send func
 func (m *Mail) Send(templateName string, items interface{}) {
-	err := m.parseTemplate("/home/kaustubh/Documents/Go_practise/LoginApp/resources/template/"+templateName, items)
+	err := m.parseTemplate(" "+templateName, items) //TODO
 	if err != nil {
 		fmt.Println("Error in parsing file", err.Error())
 	}
@@ -81,6 +85,7 @@ func (m *Mail) Send(templateName string, items interface{}) {
 	}
 }
 
+// GenerateOTP func
 func GenerateOTP(max int) string {
 	b := make([]byte, max)
 	n, err := io.ReadAtLeast(rand.Reader, b, max)
@@ -93,6 +98,7 @@ func GenerateOTP(max int) string {
 	return string(b)
 }
 
+//GenerateToken func
 func GenerateToken() string {
 	token := uuid.Must(uuid.NewV4()).String()
 	return token

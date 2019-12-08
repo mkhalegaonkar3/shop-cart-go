@@ -13,9 +13,6 @@ import (
 	products "github.com/mkhalegaonkar3/shop-cart-go/controller/products"
 	"github.com/mkhalegaonkar3/shop-cart-go/model/DB"
 
-	//order "github.com/mkhalegaonkar3/shop-cart-go/order"
-	//products "github.com/mkhalegaonkar3/shop-cart-go/products"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -61,8 +58,7 @@ func initRouter() *gin.Engine {
 	r.POST("/deleteList", requestRouter)
 	r.POST("/addProduct", requestRouter)
 	r.POST("/addCategory", requestRouter)
-	// r.GET("/getProducts", requestRouter)
-	// r.POST("/placeOrder", requestRouter)
+
 	return r
 }
 
@@ -122,7 +118,7 @@ func requestRouter(c *gin.Context) {
 	switch path {
 
 	case LOGIN:
-		login.LoginPost(db, c)
+		login.Login(db, c)
 	case VERIFYUSERNAME:
 		login.VerifyUsername(db, c)
 	case SIGNUP:

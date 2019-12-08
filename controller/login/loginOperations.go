@@ -18,19 +18,19 @@ import (
 )
 
 //LoginPage func
-func LoginPage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		sid, err := c.Cookie("session")
-		if err != nil || sid == "" {
-			c.HTML(http.StatusOK, "login.gohtml", nil)
-		} else {
-			c.Redirect(302, "/homepage")
-		}
-	}
-}
+// func LoginPage() gin.HandlerFunc {
+// 	return func(c *gin.Context) {
+// 		sid, err := c.Cookie("session")
+// 		if err != nil || sid == "" {
+// 			c.HTML(http.StatusOK, "login.gohtml", nil)
+// 		} else {
+// 			c.Redirect(302, "/homepage")
+// 		}
+// 	}
+// }
 
-// LoginPost func
-func LoginPost(db *sql.DB, c *gin.Context) {
+// Login func
+func Login(db *sql.DB, c *gin.Context) {
 
 	sid, err := c.Cookie("session")
 	fmt.Println("Print err:", err)
@@ -41,7 +41,9 @@ func LoginPost(db *sql.DB, c *gin.Context) {
 		password := c.PostForm("password")
 		fmt.Println("The username is:", username)
 		user, err := login.GetUserByUsername(username, db)
-
+		fmt.Println("stored password : ", user.Password)
+		newHash, eERRror := bcrypt.GenerateFromPassword([]byte(password), 14)
+		fmt.Println("new hash and error", newHash, eERRror)
 		if err == nil {
 			err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 			if err == nil {
@@ -54,6 +56,7 @@ func LoginPost(db *sql.DB, c *gin.Context) {
 				session.Add(cookie, details, db)
 				//TODO
 				//c.Redirect(303, "/homepage?sid="+cookie)
+				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Login Successful"})
 
 			} else {
 				fmt.Println("The err while login is:-", err)
@@ -66,21 +69,24 @@ func LoginPost(db *sql.DB, c *gin.Context) {
 
 		}
 
+	} else {
+		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Already logged in !!!"})
 	}
 
 }
 
 // Logout func
-func Logout(db *sql.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		sid, _ := c.Cookie("session")
-		//fmt.Println("removing session in session table")
-		session.RemoveSession(sid, db)
-		//fmt.Println("session removed in session table")
-		// fmt.Println("sid = ", sid)
-		c.SetCookie("session", "", -1, "/", "", false, false)
-		c.Redirect(302, "/login")
-	}
+func Logout(db *sql.DB, c *gin.Context) {
+
+	sid, _ := c.Cookie("session")
+	//fmt.Println("removing session in session table")
+	session.RemoveSession(sid, db)
+	//fmt.Println("session removed in session table")
+	// fmt.Println("sid = ", sid)
+	c.SetCookie("session", "", -1, "/", "", false, false)
+	//c.Redirect(302, "/login")
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "You have logged out !!!"})
+
 }
 
 // PasswordReset func
@@ -149,9 +155,9 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 	password := c.PostForm("password")
 
 	/* password hashing mechanism */
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 0)
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
 
-	var newUser signup.Data
+	var newUser signup.UserData
 
 	newUser.Firstname = firstname
 	newUser.Lastname = lastname
@@ -195,6 +201,7 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 
 }
 
+// VerifyUsername func
 func VerifyUsername(db *sql.DB, c *gin.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		username := c.PostForm("username")

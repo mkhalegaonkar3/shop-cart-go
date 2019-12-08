@@ -7,12 +7,12 @@ import (
 	signup "github.com/mkhalegaonkar3/shop-cart-go/model/signup"
 )
 
-//GetUserByUsername
-func GetUserByUsername(username string, db *sql.DB) (signup.Data, error) {
-	var data signup.Data
-	row := db.QueryRow("select firstName,lastname,username,creation_time from users where username= ?;", username)
+//GetUserByUsername func
+func GetUserByUsername(username string, db *sql.DB) (signup.UserData, error) {
+	var data signup.UserData
+	row := db.QueryRow("select userID,firstName,lastname,username,password from users where username= ?;", username)
 
-	err := row.Scan(&data.Firstname, &data.Lastname, &data.Email, &data.Create)
+	err := row.Scan(&data.ID, &data.Firstname, &data.Lastname, &data.Email, &data.Password)
 	if err != nil {
 		fmt.Print("No details found", err.Error())
 	}
@@ -21,8 +21,9 @@ func GetUserByUsername(username string, db *sql.DB) (signup.Data, error) {
 
 }
 
+//VerifyUsername func
 func VerifyUsername(email string, db *sql.DB) bool {
-	var data signup.Data
+	var data signup.UserData
 	row := db.QueryRow("select email from users where email= ?;", email)
 	fmt.Println(row)
 	err := row.Scan(&data.Email)
