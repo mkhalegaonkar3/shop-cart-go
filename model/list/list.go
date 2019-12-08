@@ -17,6 +17,7 @@ type List struct {
 
 // ListDetails struct for storing details of list to be deleted
 type ListDetails struct {
+	ListID      int    `json:"ListID"`
 	ProductID   int    `json:"productID"`
 	ProductName string `json:"productName"`
 	ListTitle   string `json:"listTitle"`
@@ -29,12 +30,12 @@ type ListDetails struct {
 // CreateList func
 func CreateList(list List, db *sql.DB) error {
 
-	stmt, err := db.Prepare("insert into list (userID,listTitlename,creation_time,modified_time,deletion_time,status) values(?,?,?,?,?,?);")
+	stmt, err := db.Prepare("insert into list (userID,listTitle,creation_time,modified_time,deletion_time) values(?,?,?,?,?);")
 	if err != nil {
 		fmt.Print(err.Error())
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec(list.UserID, list.ListTitle, list.Create, list.Update, list.Delete, list.Status)
+	_, err = stmt.Exec(list.UserID, list.ListTitle, list.Create, list.Update, list.Delete)
 
 	if err != nil {
 		fmt.Print(err.Error())
@@ -46,12 +47,12 @@ func CreateList(list List, db *sql.DB) error {
 // AddItemsList func
 func AddItemsList(listDetails ListDetails, db *sql.DB) error {
 
-	stmt, err := db.Prepare("insert into listDetails (productID,productName,listTitle,creation_time,modified_time,deletion_time,modifiedBy) values(?,?,?,?,?,?,?);")
+	stmt, err := db.Prepare("insert into listDetails (listID,productID,productName,listTitle,creation_time,modified_time,deletion_time,modifiedBy) values(?,?,?,?,?,?,?,?);")
 	if err != nil {
 		fmt.Print(err.Error())
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec(listDetails.ProductID, listDetails.ProductName, listDetails.ListTitle, listDetails.Create, listDetails.Update, listDetails.Delete, listDetails.ModifiedBy)
+	_, err = stmt.Exec(listDetails.ListID, listDetails.ProductID, listDetails.ProductName, listDetails.ListTitle, listDetails.Create, listDetails.Update, listDetails.Delete, listDetails.ModifiedBy)
 
 	if err != nil {
 		fmt.Print(err.Error())

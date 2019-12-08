@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"net/http"
 
-	categoryDb "github.com/KaustubhLonkar/shop-cart-go/model/category"
 	"github.com/gin-gonic/gin"
+	categoryDb "github.com/mkhalegaonkar3/shop-cart-go/model/category"
 )
 
 // AddCategory func

@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/KaustubhLonkar/shop-cart-go/model/login"
-	"github.com/KaustubhLonkar/shop-cart-go/model/mail"
-	"github.com/KaustubhLonkar/shop-cart-go/model/session"
-	"github.com/KaustubhLonkar/shop-cart-go/model/signup"
+	"github.com/mkhalegaonkar3/shop-cart-go/model/login"
+	"github.com/mkhalegaonkar3/shop-cart-go/model/mail"
+	"github.com/mkhalegaonkar3/shop-cart-go/model/session"
+	"github.com/mkhalegaonkar3/shop-cart-go/model/signup"
 	uuid "github.com/satori/go.uuid"
 
 	"github.com/gin-gonic/gin"
@@ -149,7 +149,7 @@ func RegistrationPost(db *sql.DB, c *gin.Context) {
 	password := c.PostForm("password")
 
 	/* password hashing mechanism */
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 0)
 
 	var newUser signup.Data
 

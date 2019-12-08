@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/KaustubhLonkar/shop-cart-go/model/signup"
+	"github.com/mkhalegaonkar3/shop-cart-go/model/signup"
 )
 
 type Session struct {

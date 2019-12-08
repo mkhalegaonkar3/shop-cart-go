@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	signup "github.com/KaustubhLonkar/shop-cart-go/model/signup"
+	signup "github.com/mkhalegaonkar3/shop-cart-go/model/signup"
 )
 
 //GetUserByUsername

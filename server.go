@@ -7,14 +7,14 @@ import (
 	"net/http"
 	"time"
 
-	category "github.com/KaustubhLonkar/shop-cart-go/controller/category"
-	list "github.com/KaustubhLonkar/shop-cart-go/controller/list"
-	login "github.com/KaustubhLonkar/shop-cart-go/controller/login"
-	products "github.com/KaustubhLonkar/shop-cart-go/controller/products"
-	"github.com/KaustubhLonkar/shop-cart-go/model/DB"
+	category "github.com/mkhalegaonkar3/shop-cart-go/controller/category"
+	list "github.com/mkhalegaonkar3/shop-cart-go/controller/list"
+	login "github.com/mkhalegaonkar3/shop-cart-go/controller/login"
+	products "github.com/mkhalegaonkar3/shop-cart-go/controller/products"
+	"github.com/mkhalegaonkar3/shop-cart-go/model/DB"
 
-	//order "github.com/KaustubhLonkar/shop-cart-go/order"
-	//products "github.com/KaustubhLonkar/shop-cart-go/products"
+	//order "github.com/mkhalegaonkar3/shop-cart-go/order"
+	//products "github.com/mkhalegaonkar3/shop-cart-go/products"
 
 	"github.com/gin-gonic/gin"
 )

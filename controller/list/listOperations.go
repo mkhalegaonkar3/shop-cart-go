@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	listDb "github.com/KaustubhLonkar/shop-cart-go/model/list"
+	listDb "github.com/mkhalegaonkar3/shop-cart-go/model/list"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,9 +23,9 @@ func CreateList(db *sql.DB, c *gin.Context) {
 
 	list.UserID = userID
 	list.ListTitle = listTitle
-	list.Create = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	list.Update = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	list.Delete = time.Now().Format("Mon Jan _2 15:04:05 2006")
+	list.Create = time.Now().Format("2006-01-02 15:04:05")
+	list.Update = time.Now().Format("2006-01-02 15:04:05")
+	list.Delete = time.Now().Format("2006-01-02 15:04:05")
 
 	fmt.Println("Received all the parameters for creating a list:-", list.ListTitle)
 	err := listDb.CreateList(list, db)
@@ -53,23 +53,24 @@ func AddItemsList(db *sql.DB, c *gin.Context) {
 
 	var listDetails listDb.ListDetails
 
+	listID, _ := strconv.Atoi(c.PostForm("listID"))
 	productID, _ := strconv.Atoi(c.PostForm("productid"))
 	productName := c.PostForm("ProductName")
 	listTitle := c.PostForm("listTitle")
-	username := c.PostForm("listTitle")
-
+	username := c.PostForm("username")
+	listDetails.ListID = listID
 	listDetails.ProductID = productID
 	listDetails.ProductName = productName
 	listDetails.ListTitle = listTitle
-	listDetails.Create = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	listDetails.Update = time.Now().Format("Mon Jan _2 15:04:05 2006")
-	listDetails.Delete = time.Now().Format("Mon Jan _2 15:04:05 2006")
+	listDetails.Create = time.Now().Format("2006-01-02 15:04:05")
+	listDetails.Update = time.Now().Format("2006-01-02 15:04:05")
+	listDetails.Delete = time.Now().Format("2006-01-02 15:04:05")
 	listDetails.ModifiedBy = username
 
 	fmt.Println("Received all the parameters for list of items in cart", listDetails)
 	err := listDb.AddItemsList(listDetails, db)
 	if err == nil {
-		msg := "List creation was successful, please login !!!"
+		msg := "Product was added was successfully!!!"
 
 		c.JSON(http.StatusOK, gin.H{
 			"status":  http.StatusOK,

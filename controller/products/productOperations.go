@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	productsDb "github.com/KaustubhLonkar/shop-cart-go/model/products"
 	"github.com/gin-gonic/gin"
+	productsDb "github.com/mkhalegaonkar3/shop-cart-go/model/products"
 )
 
 // AddProduct func
